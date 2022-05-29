@@ -1,3 +1,4 @@
+// данные
 const city = ['Muenchen', 'Rosenheim', 'Leipzig', 'Moskau', 'Dresden', 'Praga', 
 'Novgorod', 'Novosibirsk', 'Kemerovo', 'Pekin', 'Rom', 'Wien'];
 
@@ -6,6 +7,24 @@ const citiesFrom = document.querySelector('.input__cities-from'),
       dropdownCitiesFrom = document.querySelector('.dropdown__cities-from'),
       dropdownCitiesTo = document.querySelector('.dropdown__cities-to'),
       citiesTo = document.querySelector('.input__cities-to');
+
+      const citiesApi = 'http://api.travelpayouts.com/data/ru/cities.json';
+
+// функции
+const getData = (url, callback) => {
+    const request = new XMLHttpRequest(); // создаем объект запроса
+
+    request.open('GET', url);// настраиваем объект запроса
+    request.addEventListener('readystatechange', () => {
+        if (request.readyState !== 4) return;
+        if (request.status === 200) {
+            callback(request.response);
+        } else {
+            console.error(request.status);
+        }
+    });
+    request.send();
+};
 
 const showCity = (input, list) => {
     list.textContent = ''; //  очистили наш список городов  die Liste der Städte gelöscht
@@ -33,6 +52,7 @@ const selectCity = (event, input, list) => {
     }
 };
 
+// обработчики событий
 citiesFrom.addEventListener('input', () => { // пишем стрелочную, иначе если просто () то сразу будет вызов ф-ции
     showCity(citiesFrom, dropdownCitiesFrom);
 });
@@ -47,5 +67,10 @@ dropdownCitiesFrom.addEventListener('click', (event) => {
 
 dropdownCitiesTo.addEventListener('click', (event) => {
     selectCity(event, citiesTo, dropdownCitiesTo);
+});
+
+// вызовы функций 
+getData('', (data) => {
+    console.log(data);
 });
 
