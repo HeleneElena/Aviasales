@@ -6,8 +6,7 @@ const citiesFrom = document.querySelector('.input__cities-from'),
       citiesTo = document.querySelector('.input__cities-to');
 
 // данные
-const city = ['Muenchen', 'Rosenheim', 'Leipzig', 'Moskau', 'Dresden', 'Praga', 
-             'Novgorod', 'Novosibirsk', 'Kemerovo', 'Pekin', 'Rom', 'Wien'];
+let city = [];
 
 const citiesApi = 'dataBase/cities.json',
             proxy = 'https://cors-anywhere.herokuapp.com/';
@@ -16,7 +15,7 @@ const citiesApi = 'dataBase/cities.json',
 // функция обрабатывает данные
 const getData = (url, callback) => {
     const request = new XMLHttpRequest(); // создаем объект запроса
-
+    
     request.open('GET', url);// настраиваем объект запроса
     request.addEventListener('readystatechange', () => {
         if (request.readyState !== 4) return;
@@ -34,14 +33,15 @@ const showCity = (input, list) => {
     
     if (input.value !== '') { // если непустой наш инпут
         const filterCity = city.filter((item) => { // die Städte im Array durchgehen   перебираем города в массиве
-        const fixItem = item.toLowerCase(); //все с маленькой буквы   alle mit einem kleinen Buchstaben
-        return fixItem.includes(input.value.toLowerCase());
+            const fixItem = item.name.toLowerCase(); //все с маленькой буквы   alle mit einem kleinen Buchstaben
+            return fixItem.includes(input.value.toLowerCase());
+
         });
         
         filterCity.forEach((item) => {  //создаем новый элемент в списке einen neuen Element in der Liste erstellen
             const li = document.createElement('li');
             li.classList.add('dropdown__city');
-            li.textContent = item;
+            li.textContent = item.name;
             list.append(li);
         });
         }
@@ -73,7 +73,9 @@ dropdownCitiesTo.addEventListener('click', (event) => {
 });
 
 // вызовы функций 
-getData(citiesApi, (data) => {
-    console.log(JSON.parse(data)); //распарсим данные
+getData(citiesApi, (data) => { 
+    //распарсим данные 
+    city= JSON.parse(data).filter(item => item.name);   // если у нас в базе данных есть город, так как там есть и null
+    console.log(city);
 });
 
