@@ -1,16 +1,19 @@
-// данные
-const city = ['Muenchen', 'Rosenheim', 'Leipzig', 'Moskau', 'Dresden', 'Praga', 
-'Novgorod', 'Novosibirsk', 'Kemerovo', 'Pekin', 'Rom', 'Wien'];
-
+// элементы со страницы
 const citiesFrom = document.querySelector('.input__cities-from'),
       formSearch = document.querySelector('.form-search'),
       dropdownCitiesFrom = document.querySelector('.dropdown__cities-from'),
       dropdownCitiesTo = document.querySelector('.dropdown__cities-to'),
       citiesTo = document.querySelector('.input__cities-to');
 
-      const citiesApi = 'http://api.travelpayouts.com/data/ru/cities.json';
+// данные
+const city = ['Muenchen', 'Rosenheim', 'Leipzig', 'Moskau', 'Dresden', 'Praga', 
+             'Novgorod', 'Novosibirsk', 'Kemerovo', 'Pekin', 'Rom', 'Wien'];
 
+const citiesApi = 'dataBase/cities.json',
+            proxy = 'https://cors-anywhere.herokuapp.com/';
+    
 // функции
+// функция обрабатывает данные
 const getData = (url, callback) => {
     const request = new XMLHttpRequest(); // создаем объект запроса
 
@@ -70,7 +73,7 @@ dropdownCitiesTo.addEventListener('click', (event) => {
 });
 
 // вызовы функций 
-getData('', (data) => {
-    console.log(data);
+getData(citiesApi, (data) => {
+    console.log(JSON.parse(data)); //распарсим данные
 });
 
