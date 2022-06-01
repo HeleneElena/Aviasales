@@ -3,13 +3,16 @@ const citiesFrom = document.querySelector('.input__cities-from'),
       formSearch = document.querySelector('.form-search'),
       dropdownCitiesFrom = document.querySelector('.dropdown__cities-from'),
       dropdownCitiesTo = document.querySelector('.dropdown__cities-to'),
+      inputDateDepart = document.querySelector('.input__date-depart'),
       citiesTo = document.querySelector('.input__cities-to');
 
 // данные
 let city = [];
 
 const citiesApi = 'dataBase/cities.json',
-            proxy = 'https://cors-anywhere.herokuapp.com/';
+      proxy = 'https://cors-anywhere.herokuapp.com/',
+      calendar = 'http://map.aviasales.ru/supported_directions.json?origin_iata=LED&one_way=false&locale=ru',
+      API_KEY = 'a4e0a3dc535cb2be0d94433e4f9ab05d'; // на сайте туркомпании зарегилась, там ключ бесплатно
     
 // функции
 // функция обрабатывает данные
@@ -75,7 +78,10 @@ dropdownCitiesTo.addEventListener('click', (event) => {
 // вызовы функций 
 getData(citiesApi, (data) => { 
     //распарсим данные 
-    city= JSON.parse(data).filter(item => item.name);   // если у нас в базе данных есть город, так как там есть и null
-    console.log(city);
+    city = JSON.parse(data).filter(item => item.name);   // если у нас в базе данных есть город, так как там есть и null
 });
 
+getData(proxy + calendar + '?depart_date=2022-05-29&origin=SVX&destination=KGD&one_way+true&token=' + API_KEY, (data) => { 
+        const cheapTicket = JSON.parse(data).best_prices.filter(item => item.depart_date === '2022-05-29');
+        console.log(cheapTicket); 
+});
