@@ -75,6 +75,16 @@ dropdownCitiesTo.addEventListener('click', (event) => {
     selectCity(event, citiesTo, dropdownCitiesTo);
 });
 
+formSearch.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const formData = {
+        from: city.find((item) => citiesFrom.value === item.name).code, // сравниваем, что получили в форме, возвращается один элемент, который найдет find
+        to: city.find((item) => citiesTo.value === item.name).code, // свойство code дает нам код конкретного города, который юзер набирает в поиске
+        when: inputDateDepart.value,
+    }
+});
+
 // вызовы функций 
 getData(citiesApi, (data) => { 
     //распарсим данные 
