@@ -78,11 +78,21 @@ dropdownCitiesTo.addEventListener('click', (event) => {
 formSearch.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    const formData = {
+    const formData = { // эти данные нужны для запроса на сервер
         from: city.find((item) => citiesFrom.value === item.name).code, // сравниваем, что получили в форме, возвращается один элемент, который найдет find
         to: city.find((item) => citiesTo.value === item.name).code, // свойство code дает нам код конкретного города, который юзер набирает в поиске
         when: inputDateDepart.value,
-    }
+    };
+
+    const requestData = '?depart_date=' + formData.when + 
+          '&origin=' + formData.from +
+          '&destination=' + formData.to + 
+          '&one_way=true&token=' + API_KEY;
+
+          getData(proxy + calendar + requestData, (request) => {
+            console.log(request);
+          });
+
 });
 
 // вызовы функций 
@@ -91,7 +101,7 @@ getData(citiesApi, (data) => {
     city = JSON.parse(data).filter(item => item.name);   // если у нас в базе данных есть город, так как там есть и null
 });
 
-getData(proxy + calendar + '?depart_date=2022-05-29&origin=SVX&destination=KGD&one_way+true&token=' + API_KEY, (data) => { 
-        const cheapTicket = JSON.parse(data).best_prices.filter(item => item.depart_date === '2022-05-29');
-        console.log(cheapTicket); 
-});
+//getData(proxy + calendar + '?depart_date=2022-05-29&origin=SVX&destination=KGD&one_way+true&token=' + API_KEY, (data) => { 
+       // const cheapTicket = JSON.parse(data).best_prices.filter(item => item.depart_date === '2022-05-29');
+        //console.log(cheapTicket); 
+//});
