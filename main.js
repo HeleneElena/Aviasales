@@ -58,6 +58,16 @@ const selectCity = (event, input, list) => {
     }
 };
 
+const renderCheap = (data, date) => {
+    const cheapTicetYear = JSON.parse(data).best_prices; // билеты бэст-прайсес там отборка наших билетов
+    console.log('cheapTicetYear: ', cheapTicetYear);
+
+    const cheapTicetDay = cheapTicetYear.filter((item) => {
+        return item.depart_date === date;  //департ_дэйт это дата отправки, она должна совпадать
+    });
+    console.log('cheapTicetDay: ', cheapTicetDay);
+}; 
+
 // обработчики событий
 citiesFrom.addEventListener('input', () => { // пишем стрелочную, иначе если просто () то сразу будет вызов ф-ции
     showCity(citiesFrom, dropdownCitiesFrom);
@@ -87,16 +97,16 @@ formSearch.addEventListener('submit', (event) => {
     const requestData = '?depart_date=' + formData.when + 
           '&origin=' + formData.from +
           '&destination=' + formData.to + 
-          '&one_way=true&token=' + API_KEY;
+          '&one_way=true';
 
-          getData(proxy + calendar + requestData, (request) => {
-            console.log(request);
+          getData(calendar + requestData, (response) => {
+            renderCheap(response, formData.when); // (то, что получили от сервера, дата)
           });
 
 });
 
 // вызовы функций 
-getData(citiesApi, (data) => { 
+getData(proxy + citiesApi, (data) => { 
     //распарсим данные 
     city = JSON.parse(data).filter(item => item.name);   // если у нас в базе данных есть город, так как там есть и null
 });
